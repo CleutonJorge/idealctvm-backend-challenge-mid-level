@@ -36,11 +36,6 @@ class UserServiceTests {
 
     @Test
     fun `must save user`() {
-        val dao = UserModel(
-            documentNumber = 22400527083,
-            fullName = "João Costa",
-            id = UUID.randomUUID()
-        )
         //Scenario
         Mockito.`when`(service?.addUser(22400527083, "João Costa"))
             .thenReturn(

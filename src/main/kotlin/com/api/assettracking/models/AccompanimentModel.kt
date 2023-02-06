@@ -1,5 +1,6 @@
 package com.api.assettracking.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
@@ -26,11 +27,12 @@ class AccompanimentModel(
     @JoinColumn(name = "user_id")
     var user: UserModel? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
-            name = "post_tag",
-            joinColumns = [JoinColumn(name = "accompaniment_id")],
-            inverseJoinColumns = [JoinColumn(name = "asset_id")]
+            name = "tb_asset_accompaniment",
+            joinColumns = [JoinColumn(name = "accompaniment_id", referencedColumnName = "id")],
+            inverseJoinColumns = [JoinColumn(name = "asset_id", referencedColumnName = "id")]
     )
-    open var assets: Set<AssetModel> = HashSet()
+    @JsonIgnoreProperties("accompaniments")
+    var assets: List<AssetModel> = mutableListOf()
 )

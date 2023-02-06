@@ -1,0 +1,66 @@
+package com.api.assettracking.services.persistence
+
+import com.api.assettracking.models.AccompanimentModel
+import com.api.assettracking.models.AssetQuotationResponse
+import com.api.assettracking.models.UserModel
+import com.api.assettracking.repositories.AccompanimentRepository
+import com.api.assettracking.repositories.UserRepository
+import jakarta.annotation.PostConstruct
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
+import org.springframework.stereotype.Service
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.UriComponentsBuilder
+import java.time.LocalDateTime
+import java.util.*
+
+@Service
+class AccompanimentPersistenceService(
+    val accompanimentRepository: AccompanimentRepository
+) {
+
+    fun saveAccompaniment(user: UserModel): AccompanimentModel {
+            return accompanimentRepository.save(
+                AccompanimentModel(
+                    name = "Lista de acompanhamento "+user.fullName,
+                    createAt = LocalDateTime.now(),
+                    updateAt = null,
+                    user = user
+                )
+            )
+        }
+
+    fun getAccompaniment(id: UUID): AccompanimentModel {
+        val accompaniment = accompanimentRepository.findById(id)
+        if (accompaniment.isEmpty) {
+            throw Exception("the accompaniment is not registered")
+        } else return accompaniment.get()
+    }
+
+    fun updateAccompaniment(id: UUID, name: String): AccompanimentModel {
+        val accompaniment = accompanimentRepository.findById(id)
+        if (accompaniment.isEmpty) {
+            throw Exception("the accompaniment is already registered")
+        } else {
+            return accompanimentRepository.save(
+                AccompanimentModel(
+                    name = name,
+                    createAt = LocalDateTime.now(),
+                    updateAt = null
+                )
+            )
+        }
+    }
+
+    fun deleteAccompaniment(id: UUID) {
+        val accompaniment = accompanimentRepository.findById(id)
+        if (accompaniment.isEmpty) {
+            throw Exception("the accompaniment is not registered")
+        } else {
+            accompanimentRepository.delete(accompaniment.get())
+        }
+    }
+
+}
