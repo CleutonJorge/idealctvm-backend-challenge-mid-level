@@ -10,18 +10,17 @@ class UserModel (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private val id: UUID,
+    val id: UUID? = null,
 
     @Column(nullable = false, length = 70)
-    private val fullName: String,
+    val fullName: String,
 
     @Column(nullable = false, unique = true, length = 14)
-    private val documentNumber: Long,
+    val documentNumber: Long,
 
     @Column(nullable = false, unique = true, length = 10)
     private val type: String? = null,
 
-    @OneToMany
-    @JoinColumn(name = "accompaniment_id", nullable = false)
+    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "user")
     var accompaniment: Set<AccompanimentModel> = setOf()
 )

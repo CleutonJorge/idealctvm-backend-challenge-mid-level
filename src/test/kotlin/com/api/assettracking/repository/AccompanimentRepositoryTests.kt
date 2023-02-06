@@ -1,6 +1,8 @@
-package com.api.assettracking
+package com.api.assettracking.repository
 
+import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.models.UserModel
+import com.api.assettracking.repositories.AccompanimentRepository
 import com.api.assettracking.repositories.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
@@ -10,12 +12,13 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDateTime
 import java.util.*
 
-class UserRepositoryTests {
+class AccompanimentRepositoryTests {
 
     @Mock
-    var repository: UserRepository? = null
+    var repository: AccompanimentRepository? = null
 
 	@BeforeEach
     fun initMocks() {
@@ -24,9 +27,10 @@ class UserRepositoryTests {
 
     @Test
     fun `must save user`() {
-        val dao = UserModel(
-            documentNumber = 22400527083,
-            fullName = "João Costa",
+        val dao = AccompanimentModel(
+            name = "Lista de ativos 01",
+            createAt = LocalDateTime.now(),
+            updateAt = null,
             id = UUID.randomUUID()
         )
 
@@ -44,17 +48,19 @@ class UserRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
+                    AccompanimentModel(
+                        name = "Lista de ativos 01",
+                        createAt = LocalDateTime.now(),
+                        updateAt = null,
                         id = UUID.randomUUID()
                     )
                 )
             )
 
-        val dao = UserModel(
-            documentNumber = 22400527083,
-            fullName = "João Costa Silva",
+        val dao = AccompanimentModel(
+            name = "Lista de ativos 02",
+            createAt = LocalDateTime.now(),
+            updateAt = null,
             id = UUID.randomUUID()
         )
 
@@ -71,9 +77,10 @@ class UserRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
+                    AccompanimentModel(
+                        name = "Lista de ativos 01",
+                        createAt = LocalDateTime.now(),
+                        updateAt = null,
                         id = UUID.randomUUID()
                     )
                 )
@@ -92,9 +99,10 @@ class UserRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
+                    AccompanimentModel(
+                        name = "Lista de ativos 01",
+                        createAt = LocalDateTime.now(),
+                        updateAt = null,
                         id = UUID.randomUUID()
                     )
                 )

@@ -1,24 +1,21 @@
-package com.api.assettracking
+package com.api.assettracking.repository
 
-import com.api.assettracking.models.AccompanimentModel
+import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.UserModel
-import com.api.assettracking.repositories.AccompanimentRepository
-import com.api.assettracking.repositories.UserRepository
-import org.assertj.core.api.Assertions.assertThat
+import com.api.assettracking.repositories.AssetRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import org.springframework.beans.factory.annotation.Autowired
-import java.time.LocalDateTime
+import java.math.BigDecimal
 import java.util.*
 
-class AccompanimentRepositoryTests {
+class AssetRepositoryTests {
 
     @Mock
-    var repository: AccompanimentRepository? = null
+    var repository: AssetRepository? = null
 
 	@BeforeEach
     fun initMocks() {
@@ -27,10 +24,10 @@ class AccompanimentRepositoryTests {
 
     @Test
     fun `must save user`() {
-        val dao = AccompanimentModel(
-            name = "Lista de ativos 01",
-            createAt = LocalDateTime.now(),
-            updateAt = null,
+        val dao = AssetModel(
+            displayName = "Apple",
+            symbol = "AAPL",
+            regularMarketPrice = BigDecimal(154.5),
             id = UUID.randomUUID()
         )
 
@@ -48,19 +45,19 @@ class AccompanimentRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    AccompanimentModel(
-                        name = "Lista de ativos 01",
-                        createAt = LocalDateTime.now(),
-                        updateAt = null,
+                    AssetModel(
+                        displayName = "Apple",
+                        symbol = "AAPL",
+                        regularMarketPrice = BigDecimal(154.5),
                         id = UUID.randomUUID()
                     )
                 )
             )
 
-        val dao = AccompanimentModel(
-            name = "Lista de ativos 02",
-            createAt = LocalDateTime.now(),
-            updateAt = null,
+        val dao = AssetModel(
+            displayName = "Apple",
+            symbol = "AAPL",
+            regularMarketPrice = BigDecimal(200.5),
             id = UUID.randomUUID()
         )
 
@@ -77,10 +74,10 @@ class AccompanimentRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    AccompanimentModel(
-                        name = "Lista de ativos 01",
-                        createAt = LocalDateTime.now(),
-                        updateAt = null,
+                    AssetModel(
+                        displayName = "Apple",
+                        symbol = "AAPL",
+                        regularMarketPrice = BigDecimal(154.5),
                         id = UUID.randomUUID()
                     )
                 )
@@ -99,10 +96,10 @@ class AccompanimentRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    AccompanimentModel(
-                        name = "Lista de ativos 01",
-                        createAt = LocalDateTime.now(),
-                        updateAt = null,
+                    AssetModel(
+                        displayName = "Apple",
+                        symbol = "AAPL",
+                        regularMarketPrice = BigDecimal(154.5),
                         id = UUID.randomUUID()
                     )
                 )

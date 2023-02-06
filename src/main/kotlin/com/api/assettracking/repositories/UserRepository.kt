@@ -7,5 +7,5 @@ import java.util.*
 
 @Repository
 interface UserRepository : JpaRepository<UserModel, UUID> {
-
+    fun findByDocumentNumber(documentNumber: Long) : Optional<UserModel>
 }

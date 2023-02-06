@@ -1,21 +1,21 @@
-package com.api.assettracking
+package com.api.assettracking.repository
 
-import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.UserModel
-import com.api.assettracking.repositories.AssetRepository
+import com.api.assettracking.repositories.UserRepository
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import java.math.BigDecimal
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
-class AssetRepositoryTests {
+class UserRepositoryTests {
 
     @Mock
-    var repository: AssetRepository? = null
+    var repository: UserRepository? = null
 
 	@BeforeEach
     fun initMocks() {
@@ -24,10 +24,9 @@ class AssetRepositoryTests {
 
     @Test
     fun `must save user`() {
-        val dao = AssetModel(
-            displayName = "Apple",
-            symbol = "AAPL",
-            regularMarketPrice = BigDecimal(154.5),
+        val dao = UserModel(
+            documentNumber = 22400527083,
+            fullName = "João Costa",
             id = UUID.randomUUID()
         )
 
@@ -45,19 +44,17 @@ class AssetRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    AssetModel(
-                        displayName = "Apple",
-                        symbol = "AAPL",
-                        regularMarketPrice = BigDecimal(154.5),
+                    UserModel(
+                        documentNumber = 22400527083,
+                        fullName = "João Costa",
                         id = UUID.randomUUID()
                     )
                 )
             )
 
-        val dao = AssetModel(
-            displayName = "Apple",
-            symbol = "AAPL",
-            regularMarketPrice = BigDecimal(200.5),
+        val dao = UserModel(
+            documentNumber = 22400527083,
+            fullName = "João Costa Silva",
             id = UUID.randomUUID()
         )
 
@@ -74,10 +71,9 @@ class AssetRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    AssetModel(
-                        displayName = "Apple",
-                        symbol = "AAPL",
-                        regularMarketPrice = BigDecimal(154.5),
+                    UserModel(
+                        documentNumber = 22400527083,
+                        fullName = "João Costa",
                         id = UUID.randomUUID()
                     )
                 )
@@ -96,10 +92,9 @@ class AssetRepositoryTests {
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
             .thenReturn(
                 Optional.of(
-                    AssetModel(
-                        displayName = "Apple",
-                        symbol = "AAPL",
-                        regularMarketPrice = BigDecimal(154.5),
+                    UserModel(
+                        documentNumber = 22400527083,
+                        fullName = "João Costa",
                         id = UUID.randomUUID()
                     )
                 )
