@@ -1,5 +1,6 @@
 package com.api.assettracking.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.util.*
@@ -10,7 +11,7 @@ class AssetModel (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private val id: UUID? = null,
+    val id: UUID? = null,
 
     @Column(nullable = false, length = 70)
     private val displayName: String? = null,
@@ -22,5 +23,6 @@ class AssetModel (
     private val regularMarketPrice: BigDecimal? = null,
 
     @ManyToMany(mappedBy = "assets")
-    var accompaniments: Set<AccompanimentModel> = HashSet()
+    @JsonIgnoreProperties("assets")
+    var accompaniments: List<AccompanimentModel> = mutableListOf()
 )

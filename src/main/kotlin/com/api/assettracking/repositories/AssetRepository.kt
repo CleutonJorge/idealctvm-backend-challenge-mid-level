@@ -8,5 +8,5 @@ import java.util.*
 
 @Repository
 interface AssetRepository : JpaRepository<AssetModel, UUID> {
-
+    fun findBySymbol(symbol: String) : Optional<AssetModel>
 }

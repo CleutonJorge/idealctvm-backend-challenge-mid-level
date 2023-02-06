@@ -12,7 +12,7 @@ class AccompanimentModel(
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private val id: UUID? = null,
+    val id: UUID? = null,
 
     @Column(nullable = false, length = 70)
     private val name: String? = null,
