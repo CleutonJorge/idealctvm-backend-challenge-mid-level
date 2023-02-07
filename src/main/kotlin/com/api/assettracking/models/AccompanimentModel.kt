@@ -21,7 +21,7 @@ class AccompanimentModel(
     val createAt: LocalDateTime? = null,
 
     @Column(nullable = true)
-    private val updateAt: LocalDateTime? = null,
+    val updateAt: LocalDateTime? = null,
 
     @ManyToOne
     @JoinColumn(name = "user_id")

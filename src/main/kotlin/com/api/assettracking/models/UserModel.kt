@@ -1,5 +1,6 @@
 package com.api.assettracking.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.util.*
@@ -18,9 +19,10 @@ class UserModel (
     @Column(nullable = false, unique = true, length = 14)
     val documentNumber: Long,
 
-    @Column(nullable = false, unique = true, length = 10)
-    private val type: String? = null,
+    @Column(nullable = false, length = 10)
+    val type: String? = null,
 
     @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnoreProperties("user")
     var accompaniment: List<AccompanimentModel> = mutableListOf()
 )
