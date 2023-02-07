@@ -6,6 +6,7 @@ import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.AssetQuotationResponse
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.repositories.AccompanimentRepository
+import com.api.assettracking.repositories.AssetRepository
 import com.api.assettracking.repositories.UserRepository
 import jakarta.annotation.PostConstruct
 import org.springframework.http.HttpEntity
@@ -20,10 +21,13 @@ import java.util.*
 
 @Service
 class AccompanimentPersistenceService(
-    val accompanimentRepository: AccompanimentRepository
+    val accompanimentRepository: AccompanimentRepository,
+    val userRepository: UserRepository,
+    val assetRepository: AssetRepository
 ) {
 
-    fun saveAccompaniment(user: UserModel): AccompanimentModel {
+    fun saveAccompaniment(documentNumber: Long): AccompanimentModel {
+        val user = userRepository.findByDocumentNumber(documentNumber).get()
         return accompanimentRepository.save(
             AccompanimentModel(
                 name = "Lista de acompanhamento " + user.fullName,
@@ -34,15 +38,19 @@ class AccompanimentPersistenceService(
         )
     }
 
-    fun getAccompaniment(id: UUID): AccompanimentModel {
-        val accompaniment = accompanimentRepository.findById(id)
+    fun getAccompaniment(documentNumber: Long): AccompanimentModel {
+        val user = userRepository.findByDocumentNumber(documentNumber)
+        val accompaniment = accompanimentRepository.findByUser(user.get())
         if (accompaniment.isEmpty) {
             throw UserAccompanimentNotExistException("user accompaniment not exist")
         } else return accompaniment.get()
     }
 
-    fun updateAccompaniment(user: UserModel, asset: AssetModel): AccompanimentModel {
-        val accompaniment = accompanimentRepository.findById(user.accompaniment.first().id!!)
+    fun updateAccompaniment(documentNumber: Long, assetSymbol: String): AccompanimentModel {
+        val user = userRepository.findByDocumentNumber(documentNumber).get()
+        val asset = assetRepository.findBySymbol(assetSymbol).get()
+
+        val accompaniment = accompanimentRepository.findByUser(user)
         val newAssets = when (accompaniment.get().assets.any { it.symbol == asset.symbol }) {
             true -> accompaniment.get().assets
             false -> accompaniment.get().assets.plus(asset)

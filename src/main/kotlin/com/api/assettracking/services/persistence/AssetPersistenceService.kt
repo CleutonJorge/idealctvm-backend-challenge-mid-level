@@ -18,13 +18,13 @@ import java.util.*
 
 @Service
 class AssetPersistenceService(
-    val userRepository: AssetRepository
+    val assetRepository: AssetRepository
 ) {
 
     fun saveAsset(symbol: String, displayName: String?, regularMarketPrice: BigDecimal?): AssetModel {
-        val asset = userRepository.findBySymbol(symbol)
+        val asset = assetRepository.findBySymbol(symbol)
         if (asset.isEmpty) {
-            return userRepository.save(
+            return assetRepository.save(
                 AssetModel(
                     displayName = displayName ?: ("Ativo $symbol"),
                     symbol = symbol,
@@ -32,7 +32,7 @@ class AssetPersistenceService(
                 )
             )
         } else {
-            return userRepository.save(
+            return assetRepository.save(
                 AssetModel(
                     displayName = displayName ?: ("Ativo $symbol"),
                     symbol = symbol,

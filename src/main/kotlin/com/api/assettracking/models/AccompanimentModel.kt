@@ -25,9 +25,9 @@ class AccompanimentModel(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    var user: UserModel,
+    private var user: UserModel,
 
-    @ManyToMany(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
+    @ManyToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
     @JoinTable(
             name = "tb_asset_accompaniment",
             joinColumns = [JoinColumn(name = "accompaniment_id", referencedColumnName = "id")],

@@ -24,5 +24,5 @@ class AssetModel (
 
     @ManyToMany(mappedBy = "assets")
     @JsonIgnoreProperties("assets")
-    var accompaniments: List<AccompanimentModel> = mutableListOf()
+    private var accompaniments: List<AccompanimentModel> = mutableListOf()
 )

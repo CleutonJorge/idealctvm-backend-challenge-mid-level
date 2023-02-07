@@ -22,7 +22,7 @@ class UserModel (
     @Column(nullable = false, length = 10)
     val type: String? = null,
 
-    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnoreProperties("user")
-    var accompaniment: List<AccompanimentModel> = mutableListOf()
+    private var accompaniment: List<AccompanimentModel> = mutableListOf()
 )

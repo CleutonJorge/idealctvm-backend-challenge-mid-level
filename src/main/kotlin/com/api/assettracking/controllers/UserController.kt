@@ -21,8 +21,8 @@ class UserController(
     }
 
     @GetMapping("/user/{documentNumber}")
-    fun getUser(@PathVariable documentNumber: String): ResponseEntity<UserModel> {
-        val result = this.userService.getUser(documentNumber.toLong())
+    fun getUser(@PathVariable documentNumber: Long): ResponseEntity<UserModel> {
+        val result = this.userService.getUser(documentNumber)
         return ResponseEntity.ok(result)
     }
 }

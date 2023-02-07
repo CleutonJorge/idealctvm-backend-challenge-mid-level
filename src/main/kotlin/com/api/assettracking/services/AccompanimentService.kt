@@ -20,15 +20,15 @@ class AccompanimentService(
     val accompanimentPersistenceService: AccompanimentPersistenceService,
 ) {
 
-    fun getAccompaniment(id: UUID) : AccompanimentModel {
-        return accompanimentPersistenceService.getAccompaniment(id)
+    fun getAccompaniment(documentNumber: Long) : AccompanimentModel {
+        return accompanimentPersistenceService.getAccompaniment(documentNumber)
     }
 
-    fun addAccompaniment(user: UserModel) : AccompanimentModel {
-        return accompanimentPersistenceService.saveAccompaniment(user)
+    fun addAccompaniment(documentNumber: Long) : AccompanimentModel {
+        return accompanimentPersistenceService.saveAccompaniment(documentNumber)
     }
 
-    fun updateAccompaniment(user: UserModel, asset: AssetModel) : AccompanimentModel {
-        return accompanimentPersistenceService.updateAccompaniment(user, asset)
+    fun updateAccompaniment(documentNumber: Long, assetSymbol: String) : AccompanimentModel {
+        return accompanimentPersistenceService.updateAccompaniment(documentNumber, assetSymbol)
     }
 }

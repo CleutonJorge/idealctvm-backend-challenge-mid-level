@@ -51,14 +51,13 @@ class AssetService(
         throw AsserQuotationNotExistException("the asset does not exist: $asset")
     }
 
-    fun addAssetAccompaniment(documentNumber: Long, asset: String) : AssetModel {
-        val assetQuotation = getAssetQuotation(asset)
-        val user = userService.getUser(documentNumber)
+    fun addAssetAccompaniment(documentNumber: Long, assetSymbol: String) : AssetModel {
+        val assetQuotation = getAssetQuotation(assetSymbol)
         val asset = assetPersistenceService.saveAsset(
             assetQuotation.symbol,
             assetQuotation.shortName,
             assetQuotation.regularMarketPrice)
-        accompanimentService.updateAccompaniment(user, asset)
+        accompanimentService.updateAccompaniment(documentNumber, assetSymbol)
         return asset
     }
 

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface AccompanimentRepository : JpaRepository<AccompanimentModel, UUID> {
-
+interface AccompanimentRepository : JpaRepository<AccompanimentModel, UUID>{
+    fun findByUser(user: UserModel): Optional<AccompanimentModel>
 }

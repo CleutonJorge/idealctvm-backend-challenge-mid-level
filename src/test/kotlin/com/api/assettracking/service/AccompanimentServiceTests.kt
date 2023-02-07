@@ -33,26 +33,27 @@ class AccompanimentServiceTests {
         service = AccompanimentService(accompanimentPersistenceService)
     }
 
+    private val userDAO = UserModel(
+        documentNumber = 22400527083,
+        fullName = "João Costa",
+        id = UUID.randomUUID()
+    )
+    private val accompanimentDAO = AccompanimentModel(
+        name = "Lista de ativos 01",
+        createAt = LocalDateTime.now(),
+        updateAt = null,
+        id = UUID.randomUUID(),
+        user = userDAO
+    )
+
     @Test
     fun `must save accompaniment`() {
-        val user = UserModel(
-            documentNumber = 22400527083,
-            fullName = "João Costa",
-            id = UUID.randomUUID()
-        )
         //Scenario
-        Mockito.`when`(service?.addAccompaniment(user))
-            .thenReturn(
-                AccompanimentModel(
-                    name = "Lista de ativos João Costa",
-                    createAt = LocalDateTime.now(),
-                    updateAt = null,
-                    id = UUID.randomUUID()
-                )
-            )
+        Mockito.`when`(service?.addAccompaniment(22400527083))
+            .thenReturn(accompanimentDAO)
 
 		// execution
-        val result = service?.addAccompaniment(user)
+        val result = service?.addAccompaniment(22400527083)
 
 		//validation
 		Assertions.assertNotNull(result)
@@ -61,19 +62,11 @@ class AccompanimentServiceTests {
 
     @Test
     fun `must return accompaniment`() {
-
-        Mockito.`when`(service?.getAccompaniment(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                AccompanimentModel(
-                    name = "Lista de ativos João Costa",
-                    createAt = LocalDateTime.now(),
-                    updateAt = null,
-                    id = UUID.randomUUID()
-                )
-            )
+        Mockito.`when`(service?.getAccompaniment(22400527083))
+            .thenReturn(accompanimentDAO)
 
         // execution
-        val result = service?.getAccompaniment(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))
+        val result = service?.getAccompaniment(22400527083)
 
         //validation
         Assertions.assertNotNull(result)

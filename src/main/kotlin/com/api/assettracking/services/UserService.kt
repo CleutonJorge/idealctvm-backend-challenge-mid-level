@@ -31,7 +31,7 @@ class UserService(
     fun addUser(documentNumber: Long, fullName: String) : UserModel {
         val documentType = if (documentNumber.toString().length == 11) DocumentType.CPF else DocumentType.CNPJ
         val user = userPersistenceService.saveUser(documentNumber, fullName, documentType.name)
-        accompanimentService.addAccompaniment(user)
+        accompanimentService.addAccompaniment(user.documentNumber)
         return user
     }
 }
