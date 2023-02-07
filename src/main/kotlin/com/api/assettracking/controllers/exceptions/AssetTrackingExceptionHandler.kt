@@ -1,11 +1,11 @@
-package com.api.assettracking.controllers
+package com.api.assettracking.controllers.exceptions
 
+import com.api.assettracking.controllers.exceptions.ApiError
 import com.api.assettracking.exceptions.AsserQuotationNotExistException
 import com.api.assettracking.exceptions.UserAccompanimentNotExistException
 import com.api.assettracking.exceptions.UserNotRegisteredException
 import com.api.assettracking.exceptions.UserRegisteredException
 import org.springframework.http.HttpStatus
-import org.springframework.web.ErrorResponse
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice

@@ -21,38 +21,12 @@ import java.util.*
 
 @Service
 class AssetService(
-    val template: RestTemplate,
-    val userService: UserService,
+    val assetQuotationService: AssetQuotationService,
     val assetPersistenceService: AssetPersistenceService,
     val accompanimentService: AccompanimentService,
 ) {
-
-    fun getAssetQuotation(asset: String) : QuoteResponse {
-        val uri = UriComponentsBuilder.newInstance()
-            .scheme("https")
-            .host("yfapi.net")
-            .path("v6/finance/quote")
-            .queryParam("region", "US")
-            .queryParam("lang", "en")
-            .queryParam("symbols", asset)
-            .build()
-
-        val headers: MultiValueMap<String, String> = LinkedMultiValueMap()
-        headers.add("X-API-KEY", "AfMRqDhPiT8H5fKs0oTKe7kB4HLHJQi36429ZoZM");
-
-        val entity = template.exchange(
-            uri.toUriString(),
-            HttpMethod.GET,
-            HttpEntity<Any>(headers),
-            AssetQuotationResponse::class.java
-        )
-
-        return entity.body?.quoteResponse?.result?.firstOrNull() ?:
-        throw AsserQuotationNotExistException("the asset does not exist: $asset")
-    }
-
     fun addAssetAccompaniment(documentNumber: Long, assetSymbol: String) : AssetModel {
-        val assetQuotation = getAssetQuotation(assetSymbol)
+        val assetQuotation = assetQuotationService.getAssetQuotation(assetSymbol)
         val asset = assetPersistenceService.saveAsset(
             assetQuotation.symbol,
             assetQuotation.shortName,

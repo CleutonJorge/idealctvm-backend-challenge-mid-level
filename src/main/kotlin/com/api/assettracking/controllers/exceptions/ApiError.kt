@@ -1,4 +1,4 @@
-package com.api.assettracking.controllers
+package com.api.assettracking.controllers.exceptions
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.springframework.http.HttpStatus
