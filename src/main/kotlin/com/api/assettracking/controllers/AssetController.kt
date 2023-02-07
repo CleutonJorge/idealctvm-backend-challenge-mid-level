@@ -2,14 +2,10 @@ package com.api.assettracking.controllers
 
 import com.api.assettracking.dtos.AssetDTO
 import com.api.assettracking.dtos.AssetListQuotationDTO
-import com.api.assettracking.dtos.UserDTO
 import com.api.assettracking.models.AssetModel
-import com.api.assettracking.models.QuoteResponse
-import com.api.assettracking.models.UserModel
+import com.api.assettracking.dtos.response.QuoteResponse
 import com.api.assettracking.services.AssetQuotationService
 import com.api.assettracking.services.AssetService
-import com.api.assettracking.services.UserService
-import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

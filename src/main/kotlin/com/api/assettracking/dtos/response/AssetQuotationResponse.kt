@@ -1,8 +1,6 @@
-package com.api.assettracking.models
+package com.api.assettracking.dtos.response
 
-import jakarta.persistence.*
 import java.math.BigDecimal
-import java.util.*
 
 
 data class AssetQuotationResponse(

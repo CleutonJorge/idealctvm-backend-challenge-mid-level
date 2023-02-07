@@ -34,5 +34,5 @@ class AccompanimentModel(
             inverseJoinColumns = [JoinColumn(name = "asset_id", referencedColumnName = "id")]
     )
     @JsonIgnoreProperties("accompaniments")
-    var assets: List<AssetModel> = mutableListOf()
+    var assets: MutableList<AssetModel> = mutableListOf()
 )

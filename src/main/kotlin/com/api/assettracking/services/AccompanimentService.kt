@@ -1,5 +1,6 @@
 package com.api.assettracking.services
 
+import com.api.assettracking.enums.AssetAccompanimentOrderType
 import com.api.assettracking.enums.DocumentType
 import com.api.assettracking.models.*
 import com.api.assettracking.services.persistence.AccompanimentPersistenceService
@@ -20,8 +21,13 @@ class AccompanimentService(
     val accompanimentPersistenceService: AccompanimentPersistenceService,
 ) {
 
-    fun getAccompaniment(documentNumber: Long) : AccompanimentModel {
-        return accompanimentPersistenceService.getAccompaniment(documentNumber)
+    fun getAccompaniment(documentNumber: Long, assetOrder: AssetAccompanimentOrderType) : AccompanimentModel {
+        val compareOrder = when(assetOrder){
+            AssetAccompanimentOrderType.ASSET_SYMBOL -> compareBy(AssetModel::symbol)
+            AssetAccompanimentOrderType.ASSET_NAME -> compareBy(AssetModel::displayName)
+            AssetAccompanimentOrderType.ASSET_PRICE -> compareBy(AssetModel::regularMarketPrice)
+        }
+        return accompanimentPersistenceService.getAccompaniment(documentNumber, compareOrder)
     }
 
     fun addAccompaniment(documentNumber: Long) : AccompanimentModel {
