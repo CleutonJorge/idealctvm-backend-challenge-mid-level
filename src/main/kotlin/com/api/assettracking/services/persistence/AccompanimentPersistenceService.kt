@@ -31,49 +31,52 @@ class AccompanimentPersistenceService(
 
     fun getAccompaniment(documentNumber: Long, compareOrder: Comparator<AssetModel>): AccompanimentModel {
         val user = userRepository.findByDocumentNumber(documentNumber)
-        val accompaniment = accompanimentRepository.findByUser(user.get())
-        if (accompaniment.isEmpty) {
-            throw UserAccompanimentNotExistException("user accompaniment not exist")
-        } else {
-            val assets = accompaniment.get().assets.sortedWith(compareOrder)
-            accompaniment.get().assets = assets.toMutableList()
-            return accompaniment.get()
-        }
+        val accompanimentOptional = accompanimentRepository.findByUser(user.get())
+        val accompaniment = verifyingAccompanimentIsPresent(accompanimentOptional)
+        return sortUserAssetList(accompaniment, compareOrder)
     }
 
     fun updateAccompaniment(documentNumber: Long, assetSymbol: String): AccompanimentModel {
         val user = userRepository.findByDocumentNumber(documentNumber).get()
-        val asset = assetRepository.findBySymbol(assetSymbol).get()
-
-        val accompaniment = accompanimentRepository.findByUser(user)
-        val newAssets = when (accompaniment.get().assets.any { it.symbol == asset.symbol }) {
-            true -> accompaniment.get().assets
-            false -> accompaniment.get().assets.plus(asset)
-        }.toMutableList()
-
-        if (accompaniment.isEmpty) {
-            throw UserAccompanimentNotExistException("user accompaniment not exist")
-        } else {
-            return accompanimentRepository.save(
-                AccompanimentModel(
-                    name = accompaniment.get().name,
-                    createAt = accompaniment.get().createAt,
-                    updateAt = LocalDateTime.now(),
-                    assets = newAssets,
-                    id = accompaniment.get().id,
-                    user = user
-                )
+        val newAsset = assetRepository.findBySymbol(assetSymbol).get()
+        val userAccompanimentOptional = accompanimentRepository.findByUser(user)
+        val userAccompaniment = verifyingAccompanimentIsPresent(userAccompanimentOptional)
+        val userAssetsConcatenate = concatenatesUserNewAsset(userAccompaniment, newAsset)
+        return accompanimentRepository.save(
+            AccompanimentModel(
+                name = userAccompaniment.name,
+                createAt = userAccompaniment.createAt,
+                updateAt = LocalDateTime.now(),
+                assets = userAssetsConcatenate,
+                id = userAccompaniment.id,
+                user = user
             )
+        )
+    }
+
+    private fun verifyingAccompanimentIsPresent(accompaniment: Optional<AccompanimentModel>): AccompanimentModel {
+        return when (accompaniment.isEmpty) {
+            true -> throw UserAccompanimentNotExistException("user accompaniment not exist")
+            false -> accompaniment.get()
         }
     }
 
-    fun deleteAccompaniment(id: UUID) {
-        val accompaniment = accompanimentRepository.findById(id)
-        if (accompaniment.isEmpty) {
-            throw UserAccompanimentNotExistException("user accompaniment not exist")
-        } else {
-            accompanimentRepository.delete(accompaniment.get())
-        }
+    private fun sortUserAssetList(
+        accompaniment: AccompanimentModel,
+        compareOrder: Comparator<AssetModel>
+    ): AccompanimentModel {
+        val assets = accompaniment.assets.sortedWith(compareOrder)
+        accompaniment.assets = assets.toMutableList()
+        return accompaniment
     }
 
+    private fun concatenatesUserNewAsset(
+        userActualAccompaniment: AccompanimentModel,
+        newAsset: AssetModel
+    ): MutableList<AssetModel> {
+        return when (userActualAccompaniment.assets.any { it.symbol == newAsset.symbol }) {
+            true -> userActualAccompaniment.assets
+            false -> userActualAccompaniment.assets.plus(newAsset)
+        }.toMutableList()
+    }
 }

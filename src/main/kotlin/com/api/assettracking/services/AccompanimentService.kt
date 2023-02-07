@@ -21,20 +21,24 @@ class AccompanimentService(
     val accompanimentPersistenceService: AccompanimentPersistenceService,
 ) {
 
-    fun getAccompaniment(documentNumber: Long, assetOrder: AssetAccompanimentOrderType) : AccompanimentModel {
-        val compareOrder = when(assetOrder){
+    fun getAccompaniment(documentNumber: Long, assetOrder: AssetAccompanimentOrderType): AccompanimentModel {
+        val compareOrder = getCompareOrder(assetOrder)
+        return accompanimentPersistenceService.getAccompaniment(documentNumber, compareOrder)
+    }
+
+    fun addAccompaniment(documentNumber: Long): AccompanimentModel {
+        return accompanimentPersistenceService.saveAccompaniment(documentNumber)
+    }
+
+    fun updateAccompaniment(documentNumber: Long, assetSymbol: String): AccompanimentModel {
+        return accompanimentPersistenceService.updateAccompaniment(documentNumber, assetSymbol)
+    }
+
+    private fun getCompareOrder(assetOrder: AssetAccompanimentOrderType): Comparator<AssetModel> {
+        return when (assetOrder) {
             AssetAccompanimentOrderType.ASSET_SYMBOL -> compareBy(AssetModel::symbol)
             AssetAccompanimentOrderType.ASSET_NAME -> compareBy(AssetModel::displayName)
             AssetAccompanimentOrderType.ASSET_PRICE -> compareBy(AssetModel::regularMarketPrice)
         }
-        return accompanimentPersistenceService.getAccompaniment(documentNumber, compareOrder)
-    }
-
-    fun addAccompaniment(documentNumber: Long) : AccompanimentModel {
-        return accompanimentPersistenceService.saveAccompaniment(documentNumber)
-    }
-
-    fun updateAccompaniment(documentNumber: Long, assetSymbol: String) : AccompanimentModel {
-        return accompanimentPersistenceService.updateAccompaniment(documentNumber, assetSymbol)
     }
 }

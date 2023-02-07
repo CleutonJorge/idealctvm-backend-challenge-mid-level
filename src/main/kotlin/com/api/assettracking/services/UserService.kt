@@ -11,14 +11,21 @@ class UserService(
     val accompanimentService: AccompanimentService
 ) {
 
-    fun getUser(documentNumber: Long) : UserModel {
+    fun getUser(documentNumber: Long): UserModel {
         return userPersistenceService.getUser(documentNumber)
     }
 
-    fun addUser(documentNumber: Long, fullName: String) : UserModel {
-        val documentType = if (documentNumber.toString().length == 11) DocumentType.CPF else DocumentType.CNPJ
+    fun addUser(documentNumber: Long, fullName: String): UserModel {
+        val documentType = getDocumentType(documentNumber)
         val user = userPersistenceService.saveUser(documentNumber, fullName, documentType.name)
         accompanimentService.addAccompaniment(user.documentNumber)
         return user
+    }
+
+    private fun getDocumentType(documentNumber: Long): DocumentType {
+        return when (documentNumber.toString().length == 11) {
+            true -> DocumentType.CPF
+            false -> DocumentType.CNPJ
+        }
     }
 }
