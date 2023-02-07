@@ -17,24 +17,31 @@ class UserRepositoryTests {
     @Mock
     var repository: UserRepository? = null
 
-	@BeforeEach
+    @BeforeEach
     fun initMocks() {
         MockitoAnnotations.openMocks(this)
     }
 
+    val userDAO = UserModel(
+        documentNumber = 22400527083,
+        fullName = "João Costa",
+        id = UUID.randomUUID()
+    )
+
+    val daoUpdatedDAO = UserModel(
+        documentNumber = 22400527083,
+        fullName = "João Costa Silva",
+        id = UUID.randomUUID()
+    )
+
     @Test
     fun `must save user`() {
-        val dao = UserModel(
-            documentNumber = 22400527083,
-            fullName = "João Costa",
-            id = UUID.randomUUID()
-        )
 
-		// execution
-        repository?.save(dao)
+        // execution
+        repository?.save(userDAO)
 
-		//validation
-		Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
+        //validation
+        Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
 
     }
 
@@ -42,42 +49,20 @@ class UserRepositoryTests {
     fun `must update user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(userDAO))
 
-        val dao = UserModel(
-            documentNumber = 22400527083,
-            fullName = "João Costa Silva",
-            id = UUID.randomUUID()
-        )
+        // execution
+        repository?.save(daoUpdatedDAO)
 
-		// execution
-        repository?.save(dao)
-
-		//validation
-		Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
+        //validation
+        Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
     }
 
     @Test
     fun `must return user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(userDAO))
 
         // execution
         val result = repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))
@@ -90,15 +75,7 @@ class UserRepositoryTests {
     fun `must delete user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(userDAO))
 
         // execution
         val resultBeforeDeletion = repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))

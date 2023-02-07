@@ -20,71 +20,60 @@ class AccompanimentRepositoryTests {
     @Mock
     var repository: AccompanimentRepository? = null
 
-	@BeforeEach
+    @BeforeEach
     fun initMocks() {
         MockitoAnnotations.openMocks(this)
     }
 
+    val userDAO = UserModel(
+        documentNumber = 22400527083,
+        fullName = "João Costa Silva",
+        id = UUID.randomUUID()
+    )
+
+    val AccompanimentDAO = AccompanimentModel(
+        name = "Lista de ativos 01",
+        createAt = LocalDateTime.now(),
+        updateAt = null,
+        id = UUID.randomUUID(),
+        user = userDAO
+    )
+
+    val AccompanimentUpdatedDAO = AccompanimentModel(
+        name = "Lista de ativos 02",
+        createAt = LocalDateTime.now(),
+        updateAt = null,
+        id = UUID.randomUUID(),
+        user = userDAO
+    )
+
     @Test
     fun `must save user`() {
-        val dao = AccompanimentModel(
-            name = "Lista de ativos 01",
-            createAt = LocalDateTime.now(),
-            updateAt = null,
-            id = UUID.randomUUID()
-        )
+        // execution
+        repository?.save(AccompanimentDAO)
 
-		// execution
-        repository?.save(dao)
-
-		//validation
-		Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
+        //validation
+        Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
 
     }
 
     @Test
     fun `must update user`() {
-
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    AccompanimentModel(
-                        name = "Lista de ativos 01",
-                        createAt = LocalDateTime.now(),
-                        updateAt = null,
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(AccompanimentDAO))
 
-        val dao = AccompanimentModel(
-            name = "Lista de ativos 02",
-            createAt = LocalDateTime.now(),
-            updateAt = null,
-            id = UUID.randomUUID()
-        )
+        // execution
+        repository?.save(AccompanimentUpdatedDAO)
 
-		// execution
-        repository?.save(dao)
-
-		//validation
-		Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
+        //validation
+        Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
     }
 
     @Test
     fun `must return user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    AccompanimentModel(
-                        name = "Lista de ativos 01",
-                        createAt = LocalDateTime.now(),
-                        updateAt = null,
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(AccompanimentDAO))
 
         // execution
         val result = repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))
@@ -95,18 +84,8 @@ class AccompanimentRepositoryTests {
 
     @Test
     fun `must delete user`() {
-
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    AccompanimentModel(
-                        name = "Lista de ativos 01",
-                        createAt = LocalDateTime.now(),
-                        updateAt = null,
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(AccompanimentDAO))
 
         // execution
         val resultBeforeDeletion = repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))

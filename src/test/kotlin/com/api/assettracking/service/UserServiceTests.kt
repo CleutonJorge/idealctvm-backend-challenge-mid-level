@@ -1,5 +1,6 @@
 package com.api.assettracking.service
 
+import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.repositories.UserRepository
 import com.api.assettracking.services.AccompanimentService
@@ -15,6 +16,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDateTime
 import java.util.*
 
 class UserServiceTests {
@@ -28,29 +30,39 @@ class UserServiceTests {
     @Mock
     lateinit var accompanimentService: AccompanimentService
 
-	@BeforeEach
+    @BeforeEach
     fun initMocks() {
         MockitoAnnotations.openMocks(this)
         service = UserService(userPersistenceService, accompanimentService)
     }
 
+    private val userDAO = UserModel(
+        documentNumber = 22400527083,
+        fullName = "João Costa",
+        id = UUID.randomUUID()
+    )
+    private val accompanimentDAO = AccompanimentModel(
+        name = "Lista de ativos 01",
+        createAt = LocalDateTime.now(),
+        updateAt = null,
+        id = UUID.randomUUID(),
+        user = userDAO
+    )
+
     @Test
     fun `must save user`() {
         //Scenario
-        Mockito.`when`(service?.addUser(22400527083, "João Costa"))
-            .thenReturn(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
-                        id = UUID.randomUUID()
-                    )
-            )
+        Mockito.`when`(userPersistenceService.saveUser(22400527083, "João Costa", "CPF"))
+            .thenReturn(userDAO)
 
-		// execution
+        Mockito.`when`(accompanimentService.addAccompaniment(22400527083))
+            .thenReturn(accompanimentDAO)
+
+        // execution
         val result = service?.addUser(22400527083, "João Costa")
 
-		//validation
-		Assertions.assertNotNull(result)
+        //validation
+        Assertions.assertNotNull(result)
 
     }
 
@@ -58,13 +70,7 @@ class UserServiceTests {
     fun `must return user`() {
 
         Mockito.`when`(service?.getUser(22400527083))
-            .thenReturn(
-                    UserModel(
-                        documentNumber = 22400527083,
-                        fullName = "João Costa",
-                        id = UUID.randomUUID()
-                    )
-            )
+            .thenReturn(userDAO)
 
         // execution
         val result = service?.getUser(22400527083)

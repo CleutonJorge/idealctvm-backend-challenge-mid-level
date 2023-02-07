@@ -27,7 +27,7 @@ class AccompanimentServiceTests {
     @Mock
     lateinit var accompanimentPersistenceService: AccompanimentPersistenceService
 
-	@BeforeEach
+    @BeforeEach
     fun initMocks() {
         MockitoAnnotations.openMocks(this)
         service = AccompanimentService(accompanimentPersistenceService)
@@ -52,11 +52,11 @@ class AccompanimentServiceTests {
         Mockito.`when`(service?.addAccompaniment(22400527083))
             .thenReturn(accompanimentDAO)
 
-		// execution
+        // execution
         val result = service?.addAccompaniment(22400527083)
 
-		//validation
-		Assertions.assertNotNull(result)
+        //validation
+        Assertions.assertNotNull(result)
 
     }
 

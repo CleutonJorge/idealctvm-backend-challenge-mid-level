@@ -17,25 +17,33 @@ class AssetRepositoryTests {
     @Mock
     var repository: AssetRepository? = null
 
-	@BeforeEach
+    @BeforeEach
     fun initMocks() {
         MockitoAnnotations.openMocks(this)
     }
 
+    private val assetDAO = AssetModel(
+        displayName = "Apple",
+        symbol = "AAPL",
+        regularMarketPrice = BigDecimal(154.5),
+        id = UUID.randomUUID()
+    )
+
+    private val assetUpdatedDAO = AssetModel(
+        displayName = "Apple",
+        symbol = "AAPL",
+        regularMarketPrice = BigDecimal(200.5),
+        id = UUID.randomUUID()
+    )
+
     @Test
     fun `must save user`() {
-        val dao = AssetModel(
-            displayName = "Apple",
-            symbol = "AAPL",
-            regularMarketPrice = BigDecimal(154.5),
-            id = UUID.randomUUID()
-        )
 
-		// execution
-        repository?.save(dao)
+        // execution
+        repository?.save(assetDAO)
 
-		//validation
-		Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
+        //validation
+        Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
 
     }
 
@@ -43,45 +51,20 @@ class AssetRepositoryTests {
     fun `must update user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    AssetModel(
-                        displayName = "Apple",
-                        symbol = "AAPL",
-                        regularMarketPrice = BigDecimal(154.5),
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(assetDAO))
 
-        val dao = AssetModel(
-            displayName = "Apple",
-            symbol = "AAPL",
-            regularMarketPrice = BigDecimal(200.5),
-            id = UUID.randomUUID()
-        )
+        // execution
+        repository?.save(assetUpdatedDAO)
 
-		// execution
-        repository?.save(dao)
-
-		//validation
-		Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
+        //validation
+        Mockito.verify(repository, Mockito.atLeastOnce())?.save(Mockito.any())
     }
 
     @Test
     fun `must return user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    AssetModel(
-                        displayName = "Apple",
-                        symbol = "AAPL",
-                        regularMarketPrice = BigDecimal(154.5),
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(assetDAO))
 
         // execution
         val result = repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))
@@ -94,16 +77,7 @@ class AssetRepositoryTests {
     fun `must delete user`() {
 
         Mockito.`when`(repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633")))
-            .thenReturn(
-                Optional.of(
-                    AssetModel(
-                        displayName = "Apple",
-                        symbol = "AAPL",
-                        regularMarketPrice = BigDecimal(154.5),
-                        id = UUID.randomUUID()
-                    )
-                )
-            )
+            .thenReturn(Optional.of(assetDAO))
 
         // execution
         val resultBeforeDeletion = repository?.findById(UUID.fromString("4f35ac77-a773-41db-9814-3abe1a7e8633"))
