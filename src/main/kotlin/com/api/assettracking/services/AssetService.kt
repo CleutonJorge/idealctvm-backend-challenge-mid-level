@@ -14,8 +14,8 @@ class AssetService(
         val assetQuotation = assetQuotationService.getAssetQuotation(assetSymbol)
         val asset = assetPersistenceService.saveAsset(
             assetQuotation.symbol,
-            assetQuotation.shortName,
-            assetQuotation.regularMarketPrice)
+            assetQuotation.name,
+            assetQuotation.price)
         accompanimentService.updateAccompaniment(documentNumber, assetSymbol)
         return asset
     }
