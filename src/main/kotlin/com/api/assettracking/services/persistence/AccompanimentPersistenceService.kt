@@ -1,5 +1,6 @@
 package com.api.assettracking.services.persistence
 
+import com.api.assettracking.exceptions.UserAccompanimentNotExistException
 import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.AssetQuotationResponse
@@ -36,7 +37,7 @@ class AccompanimentPersistenceService(
     fun getAccompaniment(id: UUID): AccompanimentModel {
         val accompaniment = accompanimentRepository.findById(id)
         if (accompaniment.isEmpty) {
-            throw Exception("the accompaniment is not registered")
+            throw UserAccompanimentNotExistException("user accompaniment not exist")
         } else return accompaniment.get()
     }
 
@@ -48,7 +49,7 @@ class AccompanimentPersistenceService(
         }
 
         if (accompaniment.isEmpty) {
-            throw Exception("the accompaniment is already registered")
+            throw UserAccompanimentNotExistException("user accompaniment not exist")
         } else {
             return accompanimentRepository.save(
                 AccompanimentModel(
@@ -66,7 +67,7 @@ class AccompanimentPersistenceService(
     fun deleteAccompaniment(id: UUID) {
         val accompaniment = accompanimentRepository.findById(id)
         if (accompaniment.isEmpty) {
-            throw Exception("the accompaniment is not registered")
+            throw UserAccompanimentNotExistException("user accompaniment not exist")
         } else {
             accompanimentRepository.delete(accompaniment.get())
         }

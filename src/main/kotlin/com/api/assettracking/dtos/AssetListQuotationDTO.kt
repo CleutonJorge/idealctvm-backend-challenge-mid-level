@@ -1,0 +1,13 @@
+package com.api.assettracking.dtos
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import jakarta.persistence.*
+import jakarta.validation.constraints.Size
+import java.math.BigDecimal
+import java.util.*
+
+class AssetListQuotationDTO(
+
+    val assetList: List<String>,
+
+    )

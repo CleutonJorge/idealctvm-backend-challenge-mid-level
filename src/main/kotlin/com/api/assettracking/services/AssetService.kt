@@ -1,6 +1,7 @@
 package com.api.assettracking.services
 
 import com.api.assettracking.enums.DocumentType
+import com.api.assettracking.exceptions.AsserQuotationNotExistException
 import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.AssetQuotationResponse
 import com.api.assettracking.models.QuoteResponse
@@ -46,8 +47,8 @@ class AssetService(
             AssetQuotationResponse::class.java
         )
 
-        return entity.body?.quoteResponse?.result?.first() ?:
-        throw Exception("the asset does not exist")
+        return entity.body?.quoteResponse?.result?.firstOrNull() ?:
+        throw AsserQuotationNotExistException("the asset does not exist: $asset")
     }
 
     fun addAssetAccompaniment(documentNumber: Long, asset: String) : AssetModel {
