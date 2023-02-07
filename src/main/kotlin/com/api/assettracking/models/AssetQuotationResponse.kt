@@ -16,7 +16,7 @@ data class QuoteListResponse(
 )
 
 data class QuoteResponse(
-    val quoteSourceName: String,
+    val shortName: String?,
     val symbol: String,
-    val regularMarketPrice: BigDecimal
+    val regularMarketPrice: BigDecimal?
 )

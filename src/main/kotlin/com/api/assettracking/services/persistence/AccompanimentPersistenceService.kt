@@ -1,6 +1,7 @@
 package com.api.assettracking.services.persistence
 
 import com.api.assettracking.models.AccompanimentModel
+import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.AssetQuotationResponse
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.repositories.AccompanimentRepository
@@ -22,15 +23,15 @@ class AccompanimentPersistenceService(
 ) {
 
     fun saveAccompaniment(user: UserModel): AccompanimentModel {
-            return accompanimentRepository.save(
-                AccompanimentModel(
-                    name = "Lista de acompanhamento "+user.fullName,
-                    createAt = LocalDateTime.now(),
-                    updateAt = null,
-                    user = user
-                )
+        return accompanimentRepository.save(
+            AccompanimentModel(
+                name = "Lista de acompanhamento " + user.fullName,
+                createAt = LocalDateTime.now(),
+                updateAt = null,
+                user = user
             )
-        }
+        )
+    }
 
     fun getAccompaniment(id: UUID): AccompanimentModel {
         val accompaniment = accompanimentRepository.findById(id)
@@ -39,16 +40,24 @@ class AccompanimentPersistenceService(
         } else return accompaniment.get()
     }
 
-    fun updateAccompaniment(id: UUID, name: String): AccompanimentModel {
-        val accompaniment = accompanimentRepository.findById(id)
+    fun updateAccompaniment(user: UserModel, asset: AssetModel): AccompanimentModel {
+        val accompaniment = accompanimentRepository.findById(user.accompaniment.first().id!!)
+        val newAssets = when (accompaniment.get().assets.any { it.symbol == asset.symbol }) {
+            true -> accompaniment.get().assets
+            false -> accompaniment.get().assets.plus(asset)
+        }
+
         if (accompaniment.isEmpty) {
             throw Exception("the accompaniment is already registered")
         } else {
             return accompanimentRepository.save(
                 AccompanimentModel(
-                    name = name,
-                    createAt = LocalDateTime.now(),
-                    updateAt = null
+                    name = accompaniment.get().name,
+                    createAt = accompaniment.get().createAt,
+                    updateAt = LocalDateTime.now(),
+                    assets = newAssets,
+                    id = accompaniment.get().id,
+                    user = user
                 )
             )
         }

@@ -17,7 +17,7 @@ class AssetModel (
     private val displayName: String? = null,
 
     @Column(nullable = false, unique = true, length = 10)
-    private val symbol: String? = null,
+    val symbol: String? = null,
 
     @Column(nullable = false)
     private val regularMarketPrice: BigDecimal? = null,

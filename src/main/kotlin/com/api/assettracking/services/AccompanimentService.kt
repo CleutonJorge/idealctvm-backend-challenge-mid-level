@@ -27,4 +27,8 @@ class AccompanimentService(
     fun addAccompaniment(user: UserModel) : AccompanimentModel {
         return accompanimentPersistenceService.saveAccompaniment(user)
     }
+
+    fun updateAccompaniment(user: UserModel, asset: AssetModel) : AccompanimentModel {
+        return accompanimentPersistenceService.updateAccompaniment(user, asset)
+    }
 }

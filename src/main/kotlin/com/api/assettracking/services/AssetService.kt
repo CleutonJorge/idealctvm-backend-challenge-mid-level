@@ -23,6 +23,7 @@ class AssetService(
     val template: RestTemplate,
     val userService: UserService,
     val assetPersistenceService: AssetPersistenceService,
+    val accompanimentService: AccompanimentService,
 ) {
 
     fun getAssetQuotation(asset: String) : QuoteResponse {
@@ -52,11 +53,12 @@ class AssetService(
     fun addAssetAccompaniment(documentNumber: Long, asset: String) : AssetModel {
         val assetQuotation = getAssetQuotation(asset)
         val user = userService.getUser(documentNumber)
-        return assetPersistenceService.saveAsset(
+        val asset = assetPersistenceService.saveAsset(
             assetQuotation.symbol,
-            assetQuotation.quoteSourceName,
-            assetQuotation.regularMarketPrice,
-            user.accompaniment.first())
+            assetQuotation.shortName,
+            assetQuotation.regularMarketPrice)
+        accompanimentService.updateAccompaniment(user, asset)
+        return asset
     }
 
 }

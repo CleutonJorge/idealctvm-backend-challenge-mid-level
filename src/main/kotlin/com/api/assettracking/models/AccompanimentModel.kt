@@ -15,19 +15,19 @@ class AccompanimentModel(
     val id: UUID? = null,
 
     @Column(nullable = false, length = 70)
-    private val name: String? = null,
+    val name: String? = null,
 
     @Column(nullable = false)
-    private val createAt: LocalDateTime? = null,
+    val createAt: LocalDateTime? = null,
 
     @Column(nullable = true)
     private val updateAt: LocalDateTime? = null,
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    var user: UserModel? = null,
+    var user: UserModel,
 
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToMany(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_asset_accompaniment",
             joinColumns = [JoinColumn(name = "accompaniment_id", referencedColumnName = "id")],

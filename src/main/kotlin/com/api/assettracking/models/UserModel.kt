@@ -21,6 +21,6 @@ class UserModel (
     @Column(nullable = false, unique = true, length = 10)
     private val type: String? = null,
 
-    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER, mappedBy = "user")
     var accompaniment: List<AccompanimentModel> = mutableListOf()
 )

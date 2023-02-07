@@ -21,23 +21,22 @@ class AssetPersistenceService(
     val userRepository: AssetRepository
 ) {
 
-    fun saveAsset(symbol: String, displayName: String, regularMarketPrice: BigDecimal, accompaniment: AccompanimentModel): AssetModel {
+    fun saveAsset(symbol: String, displayName: String?, regularMarketPrice: BigDecimal?): AssetModel {
         val asset = userRepository.findBySymbol(symbol)
         if (asset.isEmpty) {
             return userRepository.save(
                 AssetModel(
-                    displayName = displayName,
+                    displayName = displayName ?: ("Ativo $symbol"),
                     symbol = symbol,
-                    regularMarketPrice = regularMarketPrice,
-                    accompaniments = listOf(accompaniment)
+                    regularMarketPrice = regularMarketPrice ?: BigDecimal.ZERO,
                 )
             )
         } else {
             return userRepository.save(
                 AssetModel(
-                    displayName = displayName,
+                    displayName = displayName ?: ("Ativo $symbol"),
                     symbol = symbol,
-                    regularMarketPrice = regularMarketPrice,
+                    regularMarketPrice = regularMarketPrice ?: BigDecimal.ZERO,
                     id = asset.get().id
                 )
             )
