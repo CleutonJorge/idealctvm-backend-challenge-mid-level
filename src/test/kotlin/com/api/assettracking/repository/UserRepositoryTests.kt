@@ -1,6 +1,8 @@
 package com.api.assettracking.repository
 
+import com.api.assettracking.enums.RoleName
 import com.api.assettracking.models.UserModel
+import com.api.assettracking.models.security.RoleModel
 import com.api.assettracking.repositories.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
@@ -10,6 +12,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
 
 class UserRepositoryTests {
@@ -22,16 +25,26 @@ class UserRepositoryTests {
         MockitoAnnotations.openMocks(this)
     }
 
+    val roleDAO = RoleModel(
+        roleName = RoleName.ROLE_USER
+    )
+
+    val passwordEncrypted = BCryptPasswordEncoder().encode("123")
+
     val userDAO = UserModel(
         documentNumber = 22400527083,
         fullName = "João Costa",
-        id = UUID.randomUUID()
+        id = UUID.randomUUID(),
+        password = passwordEncrypted,
+        roles = listOf(roleDAO)
     )
 
     val daoUpdatedDAO = UserModel(
         documentNumber = 22400527083,
         fullName = "João Costa Silva",
-        id = UUID.randomUUID()
+        id = UUID.randomUUID(),
+        password = passwordEncrypted,
+        roles = listOf(roleDAO)
     )
 
     @Test

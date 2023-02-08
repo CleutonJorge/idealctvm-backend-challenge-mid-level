@@ -1,7 +1,9 @@
 package com.api.assettracking.repository
 
+import com.api.assettracking.enums.RoleName
 import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.models.UserModel
+import com.api.assettracking.models.security.RoleModel
 import com.api.assettracking.repositories.AccompanimentRepository
 import com.api.assettracking.repositories.UserRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -12,6 +14,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.time.LocalDateTime
 import java.util.*
 
@@ -25,10 +28,18 @@ class AccompanimentRepositoryTests {
         MockitoAnnotations.openMocks(this)
     }
 
+    val roleDAO = RoleModel(
+        roleName = RoleName.ROLE_USER
+    )
+
+    val passwordEncrypted = BCryptPasswordEncoder().encode("123")
+
     val userDAO = UserModel(
         documentNumber = 22400527083,
         fullName = "João Costa Silva",
-        id = UUID.randomUUID()
+        id = UUID.randomUUID(),
+        password = passwordEncrypted,
+        roles = listOf(roleDAO)
     )
 
     val AccompanimentDAO = AccompanimentModel(

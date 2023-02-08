@@ -1,11 +1,13 @@
 package com.api.assettracking.services.persistence
 
+import com.api.assettracking.enums.RoleName
 import com.api.assettracking.exceptions.UserAccompanimentNotExistException
 import com.api.assettracking.exceptions.UserNotRegisteredException
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.repositories.UserRepository
 import com.api.assettracking.exceptions.UserRegisteredException
 import com.api.assettracking.models.AccompanimentModel
+import com.api.assettracking.models.security.RoleModel
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,7 +16,7 @@ class UserPersistenceService(
     val userRepository: UserRepository
 ) {
 
-    fun saveUser(documentNumber: Long, fullName: String, documentType: String): UserModel {
+    fun saveUser(documentNumber: Long, fullName: String, documentType: String, password: String, roles : List<RoleName>): UserModel {
         val user = userRepository.findByDocumentNumber(documentNumber)
         return when(user.isEmpty) {
             true -> userRepository.save(
@@ -22,7 +24,9 @@ class UserPersistenceService(
                     documentNumber = documentNumber,
                     fullName = fullName,
                     id = UUID.randomUUID(),
-                    type = documentType
+                    type = documentType,
+                    password = password,
+                    roles = roles.map { RoleModel( roleName = it ) }
                 )
             )
             false -> throw UserRegisteredException("the user is already registered")

@@ -6,6 +6,7 @@ import com.api.assettracking.services.AccompanimentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*
 class AccompanimentController(
     val accompanimentService: AccompanimentService
 ) {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(summary = "User consults his asset tracking list")
     @GetMapping("/accompaniment/{documentNumber}/{assetOrder}")
     fun addAssetAccompaniment(@PathVariable documentNumber: Long, @PathVariable assetOrder: AssetAccompanimentOrderType): ResponseEntity<AccompanimentModel> {
