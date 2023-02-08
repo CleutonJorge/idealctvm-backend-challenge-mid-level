@@ -6,23 +6,26 @@ import com.api.assettracking.models.AssetModel
 import com.api.assettracking.dtos.response.QuoteResponse
 import com.api.assettracking.services.AssetQuotationService
 import com.api.assettracking.services.AssetService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/v1")
+@Tag(name = "Controller responsible for asset management")
 class AssetController(
     val assetService: AssetService,
     val assetQuotationService: AssetQuotationService
 ) {
-    //1. Usuário adiciona um ativo em sua lista de acompanhamento.
+    @Operation(summary = "User add an asset to their asset tracking list")
     @PostMapping("/asset")
     fun addAssetAccompaniment(@RequestBody asset: AssetDTO): ResponseEntity<AssetModel> {
         val result = this.assetService.addAssetAccompaniment(asset.documentNumber, asset.symbol)
         return ResponseEntity.ok(result)
     }
 
-    //4. Usuário consulta a cotação de um ou mais ativos.
+    @Operation(summary = "User consults the quotation of one or more assets")
     @GetMapping("/asset/asset-list")
     fun getAssetListQuotation(@RequestBody assetList: AssetListQuotationDTO): ResponseEntity<List<QuoteResponse>> {
         val result = assetList.assetList.map { this.assetQuotationService.getAssetQuotation(it) }

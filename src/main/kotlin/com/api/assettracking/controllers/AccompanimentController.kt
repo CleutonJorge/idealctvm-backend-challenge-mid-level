@@ -3,15 +3,18 @@ package com.api.assettracking.controllers
 import com.api.assettracking.enums.AssetAccompanimentOrderType
 import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.services.AccompanimentService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/v1")
+@Tag(name = "Controller responsible for asset tracking list operations")
 class AccompanimentController(
     val accompanimentService: AccompanimentService
 ) {
-    //3. Usuário consulta sua lista de acompanhamento.
+    @Operation(summary = "User consults his asset tracking list")
     @GetMapping("/accompaniment/{documentNumber}/{assetOrder}")
     fun addAssetAccompaniment(@PathVariable documentNumber: Long, @PathVariable assetOrder: AssetAccompanimentOrderType): ResponseEntity<AccompanimentModel> {
         val result = this.accompanimentService.getAccompaniment(documentNumber, assetOrder)

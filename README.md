@@ -27,6 +27,7 @@ PostgresSQL JPA com hibernate
 
 
 ## APIs REST
+* swagger: http://localhost:8080/swagger-ui/index.html#/
 ### Criação de Usuário - api cria usuário e adicionar uma lista de acompanhamento vazia.
 `curl --location --request POST 'localhost:8080/v1/user' \
 --header 'Content-Type: application/json' \
