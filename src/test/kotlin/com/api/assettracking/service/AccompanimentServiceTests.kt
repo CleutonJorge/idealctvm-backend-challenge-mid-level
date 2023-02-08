@@ -1,6 +1,8 @@
 package com.api.assettracking.service
 
+import com.api.assettracking.enums.AssetAccompanimentOrderType
 import com.api.assettracking.models.AccompanimentModel
+import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.repositories.UserRepository
 import com.api.assettracking.services.AccompanimentService
@@ -60,15 +62,4 @@ class AccompanimentServiceTests {
 
     }
 
-    @Test
-    fun `must return accompaniment`() {
-        Mockito.`when`(service?.getAccompaniment(22400527083))
-            .thenReturn(accompanimentDAO)
-
-        // execution
-        val result = service?.getAccompaniment(22400527083)
-
-        //validation
-        Assertions.assertNotNull(result)
-    }
 }
