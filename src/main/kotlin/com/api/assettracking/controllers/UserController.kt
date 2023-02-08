@@ -25,4 +25,10 @@ class UserController(
         val result = this.userService.getUser(documentNumber)
         return ResponseEntity.ok(result)
     }
+
+    @GetMapping("/user/all/user-list")
+    fun getUsers(): ResponseEntity<List<UserModel>> {
+        val result = this.userService.getUsers()
+        return ResponseEntity.ok(result)
+    }
 }

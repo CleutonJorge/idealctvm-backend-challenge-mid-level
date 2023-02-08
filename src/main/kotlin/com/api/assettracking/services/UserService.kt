@@ -15,6 +15,10 @@ class UserService(
         return userPersistenceService.getUser(documentNumber)
     }
 
+    fun getUsers(): List<UserModel> {
+        return userPersistenceService.getUsers()
+    }
+
     fun addUser(documentNumber: Long, fullName: String): UserModel {
         val documentType = getDocumentType(documentNumber)
         val user = userPersistenceService.saveUser(documentNumber, fullName, documentType.name)

@@ -36,4 +36,8 @@ class UserPersistenceService(
         } else return user.get()
     }
 
+    fun getUsers(): List<UserModel> {
+        return userRepository.findAll().map { it }
+    }
+
 }
