@@ -12,6 +12,8 @@ Kotlin 1.7.22
 
 PostgresSQL JPA com hibernate
 
+![Entidade Relacionamento](img/asset_tracking_database.png)
+
 ## Execução
 ### Executação banco de dados postgres: 
 #### no diretorio da imagem yml (\asset-tracking\database-docker) executar o comando:
