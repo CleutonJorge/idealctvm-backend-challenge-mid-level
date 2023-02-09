@@ -18,7 +18,7 @@ class RoleModel (
     @Column(nullable = false, unique = true)
     private var roleName: RoleName? = null,
 
-): GrantedAuthority {
+): GrantedAuthority, Serializable {
 
     override fun getAuthority(): String {
         return roleName.toString()

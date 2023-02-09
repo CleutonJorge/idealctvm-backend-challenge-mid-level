@@ -1,6 +1,7 @@
 package com.api.assettracking.controllers
 
 import com.api.assettracking.dtos.UserDTO
+import com.api.assettracking.dtos.response.UserResponse
 import com.api.assettracking.exceptions.UserRegisteredException
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.services.UserService
@@ -20,14 +21,14 @@ class UserController(
 ) {
     @Operation(summary = "Add a new user to the system")
     @PostMapping("/user")
-    fun createUser(@RequestBody @Valid user: UserDTO): ResponseEntity<UserModel> {
+    fun createUser(@RequestBody @Valid user: UserDTO): ResponseEntity<UserResponse> {
         val result = this.userService.addUser(user.documentNumber, user.fullName, user.password, user.roles)
         return ResponseEntity.ok(result)
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(summary = "Search for a user in the system")
     @GetMapping("/user/{documentNumber}")
-    fun getUser(@PathVariable documentNumber: Long): ResponseEntity<UserModel> {
+    fun getUser(@PathVariable @Valid documentNumber: Long): ResponseEntity<UserResponse> {
         val result = this.userService.getUser(documentNumber)
         return ResponseEntity.ok(result)
     }
@@ -35,7 +36,7 @@ class UserController(
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(summary = "List all registered users")
     @GetMapping("/user/all/user-list")
-    fun getUsers(): ResponseEntity<List<UserModel>> {
+    fun getUsers(): ResponseEntity<List<UserResponse>> {
         val result = this.userService.getUsers()
         return ResponseEntity.ok(result)
     }

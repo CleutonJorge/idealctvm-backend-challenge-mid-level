@@ -23,14 +23,14 @@ class AssetRepositoryTests {
     }
 
     private val assetDAO = AssetModel(
-        displayName = "Apple",
+        displayName = "Ativo APPL",
         symbol = "AAPL",
         regularMarketPrice = BigDecimal(154.5),
         id = UUID.randomUUID()
     )
 
     private val assetUpdatedDAO = AssetModel(
-        displayName = "Apple",
+        displayName = "Ativo APPL",
         symbol = "AAPL",
         regularMarketPrice = BigDecimal(200.5),
         id = UUID.randomUUID()

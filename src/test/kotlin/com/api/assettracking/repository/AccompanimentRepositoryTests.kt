@@ -39,6 +39,7 @@ class AccompanimentRepositoryTests {
         fullName = "João Costa Silva",
         id = UUID.randomUUID(),
         password = passwordEncrypted,
+        type = "CPF",
         roles = listOf(roleDAO)
     )
 

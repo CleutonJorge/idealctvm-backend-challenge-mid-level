@@ -14,13 +14,13 @@ class AssetModel (
     val id: UUID? = null,
 
     @Column(nullable = false, length = 70)
-    val displayName: String? = null,
+    val displayName: String,
 
     @Column(nullable = false, unique = true, length = 10)
-    val symbol: String? = null,
+    val symbol: String,
 
     @Column(nullable = false)
-    val regularMarketPrice: BigDecimal? = null,
+    val regularMarketPrice: BigDecimal,
 
     @ManyToMany(mappedBy = "assets")
     @JsonIgnoreProperties("assets")

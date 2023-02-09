@@ -1,5 +1,7 @@
 package com.api.assettracking.service
 
+import com.api.assettracking.dtos.response.AccompanimentResponse
+import com.api.assettracking.dtos.response.UserResponse
 import com.api.assettracking.enums.RoleName
 import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.models.UserModel
@@ -45,19 +47,20 @@ class UserServiceTests {
 
     private val passwordEncrypted: String = BCryptPasswordEncoder().encode("123")
 
-    private val userDAO = UserModel(
+    private val userResponse = UserResponse(
+        documentNumber = 22400527083,
+        fullName = "João Costa",
+        documentType = "CPF",
+        roles = listOf("ROLE_USER")
+    )
+
+    val userDAO = UserModel(
         documentNumber = 22400527083,
         fullName = "João Costa",
         id = UUID.randomUUID(),
         password = passwordEncrypted,
+        type = "CPF",
         roles = listOf(roleDAO)
-    )
-    private val accompanimentDAO = AccompanimentModel(
-        name = "Lista de ativos 01",
-        createAt = LocalDateTime.now(),
-        updateAt = null,
-        id = UUID.randomUUID(),
-        user = userDAO
     )
 
     /*@Test
@@ -81,7 +84,7 @@ class UserServiceTests {
     @Test
     fun `must return user`() {
 
-        Mockito.`when`(service?.getUser(22400527083))
+        Mockito.`when`(userPersistenceService.getUser(22400527083))
             .thenReturn(userDAO)
 
         // execution

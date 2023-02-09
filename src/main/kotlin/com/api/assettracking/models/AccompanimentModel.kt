@@ -15,10 +15,10 @@ class AccompanimentModel(
     val id: UUID? = null,
 
     @Column(nullable = false, length = 70)
-    val name: String? = null,
+    val name: String,
 
     @Column(nullable = false)
-    val createAt: LocalDateTime? = null,
+    val createAt: LocalDateTime,
 
     @Column(nullable = true)
     val updateAt: LocalDateTime? = null,

@@ -42,4 +42,8 @@ class AssetPersistenceService(
                 )
         }
     }
+
+    fun findAssetBySymbol(assetSymbol: String): AssetModel {
+        return assetRepository.findBySymbol(assetSymbol).get()
+    }
 }

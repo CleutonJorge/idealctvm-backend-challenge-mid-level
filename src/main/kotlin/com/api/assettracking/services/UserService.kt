@@ -1,5 +1,6 @@
 package com.api.assettracking.services
 
+import com.api.assettracking.dtos.response.UserResponse
 import com.api.assettracking.enums.DocumentType
 import com.api.assettracking.enums.RoleName
 import com.api.assettracking.models.UserModel
@@ -14,20 +15,20 @@ class UserService(
     val accompanimentService: AccompanimentService
 ) {
 
-    fun getUser(documentNumber: Long): UserModel {
-        return userPersistenceService.getUser(documentNumber)
+    fun getUser(documentNumber: Long): UserResponse {
+        return userPersistenceService.getUser(documentNumber).toResponse()
     }
 
-    fun getUsers(): List<UserModel> {
-        return userPersistenceService.getUsers()
+    fun getUsers(): List<UserResponse> {
+        return userPersistenceService.getUsers().map { it.toResponse() }
     }
 
-    fun addUser(documentNumber: Long, fullName: String, password: String, roles : List<RoleName>): UserModel {
+    fun addUser(documentNumber: Long, fullName: String, password: String, roles : List<RoleName>): UserResponse {
         val documentType = getDocumentType(documentNumber)
         val passwordEncrypted = BCryptPasswordEncoder().encode(password)
         val user = userPersistenceService.saveUser(documentNumber, fullName, documentType.name, passwordEncrypted, roles)
         accompanimentService.addAccompaniment(user.documentNumber)
-        return user
+        return user.toResponse()
     }
 
     private fun getDocumentType(documentNumber: Long): DocumentType {
@@ -35,5 +36,14 @@ class UserService(
             true -> DocumentType.CPF
             false -> DocumentType.CNPJ
         }
+    }
+
+    private fun UserModel.toResponse() : UserResponse {
+        return UserResponse(
+            documentNumber = documentNumber,
+            documentType = type,
+            fullName = fullName,
+            roles = authorities.map { it?.authority }
+        )
     }
 }

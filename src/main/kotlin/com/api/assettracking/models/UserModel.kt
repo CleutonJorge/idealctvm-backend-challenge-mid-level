@@ -23,7 +23,7 @@ class UserModel(
     val documentNumber: Long,
 
     @Column(nullable = false, length = 10)
-    val type: String? = null,
+    val type: String,
 
     @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnoreProperties("user")

@@ -13,12 +13,12 @@ import java.util.*
 @Service
 class AccompanimentPersistenceService(
     val accompanimentRepository: AccompanimentRepository,
-    val userRepository: UserRepository,
-    val assetRepository: AssetRepository
+    val userPersistenceService: UserPersistenceService,
+    val assetPersistenceService: AssetPersistenceService
 ) {
 
     fun saveAccompaniment(documentNumber: Long): AccompanimentModel {
-        val user = userRepository.findByDocumentNumber(documentNumber).get()
+        val user = userPersistenceService.getUser(documentNumber)
         return accompanimentRepository.save(
             AccompanimentModel(
                 name = "Lista de acompanhamento " + user.fullName,
@@ -30,15 +30,15 @@ class AccompanimentPersistenceService(
     }
 
     fun getAccompaniment(documentNumber: Long, compareOrder: Comparator<AssetModel>): AccompanimentModel {
-        val user = userRepository.findByDocumentNumber(documentNumber)
-        val accompanimentOptional = accompanimentRepository.findByUser(user.get())
+        val user = userPersistenceService.getUser(documentNumber)
+        val accompanimentOptional = accompanimentRepository.findByUser(user)
         val accompaniment = verifyingAccompanimentIsPresent(accompanimentOptional)
         return sortUserAssetList(accompaniment, compareOrder)
     }
 
     fun updateAccompaniment(documentNumber: Long, assetSymbol: String): AccompanimentModel {
-        val user = userRepository.findByDocumentNumber(documentNumber).get()
-        val newAsset = assetRepository.findBySymbol(assetSymbol).get()
+        val user = userPersistenceService.getUser(documentNumber)
+        val newAsset = assetPersistenceService.findAssetBySymbol(assetSymbol)
         val userAccompanimentOptional = accompanimentRepository.findByUser(user)
         val userAccompaniment = verifyingAccompanimentIsPresent(userAccompanimentOptional)
         val userAssetsConcatenate = concatenatesUserNewAsset(userAccompaniment, newAsset)

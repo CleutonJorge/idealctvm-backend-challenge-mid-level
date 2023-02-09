@@ -2,6 +2,7 @@ package com.api.assettracking.controllers
 
 import com.api.assettracking.dtos.AssetDTO
 import com.api.assettracking.dtos.AssetListQuotationDTO
+import com.api.assettracking.dtos.response.AssetResponse
 import com.api.assettracking.models.AssetModel
 import com.api.assettracking.dtos.response.QuoteResponse
 import com.api.assettracking.services.AssetQuotationService
@@ -22,7 +23,7 @@ class AssetController(
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(summary = "User add an asset to their asset tracking list")
     @PostMapping("/asset")
-    fun addAssetAccompaniment(@RequestBody asset: AssetDTO): ResponseEntity<AssetModel> {
+    fun addAssetAccompaniment(@RequestBody asset: AssetDTO): ResponseEntity<AssetResponse> {
         val result = this.assetService.addAssetAccompaniment(asset.documentNumber, asset.symbol)
         return ResponseEntity.ok(result)
     }

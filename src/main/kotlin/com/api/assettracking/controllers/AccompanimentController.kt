@@ -1,7 +1,7 @@
 package com.api.assettracking.controllers
 
+import com.api.assettracking.dtos.response.AccompanimentResponse
 import com.api.assettracking.enums.AssetAccompanimentOrderType
-import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.services.AccompanimentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -18,7 +18,7 @@ class AccompanimentController(
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(summary = "User consults his asset tracking list")
     @GetMapping("/accompaniment/{documentNumber}/{assetOrder}")
-    fun addAssetAccompaniment(@PathVariable documentNumber: Long, @PathVariable assetOrder: AssetAccompanimentOrderType): ResponseEntity<AccompanimentModel> {
+    fun addAssetAccompaniment(@PathVariable documentNumber: Long, @PathVariable assetOrder: AssetAccompanimentOrderType): ResponseEntity<AccompanimentResponse> {
         val result = this.accompanimentService.getAccompaniment(documentNumber, assetOrder)
         return ResponseEntity.ok(result)
     }

@@ -6,9 +6,11 @@ import com.api.assettracking.exceptions.UserAccompanimentNotExistException
 import com.api.assettracking.exceptions.UserNotRegisteredException
 import com.api.assettracking.exceptions.UserRegisteredException
 import org.springframework.http.HttpStatus
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 
 @RestControllerAdvice
 class AssetTrackingExceptionHandler {
@@ -49,6 +51,26 @@ class AssetTrackingExceptionHandler {
         return ApiError(
             status = HttpStatus.NOT_FOUND,
             statusValue = HttpStatus.NOT_FOUND.value().toString(),
+            error = ex?.message,
+        )
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    fun handleMethodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException?): ApiError? {
+        return ApiError(
+            status = HttpStatus.BAD_REQUEST,
+            statusValue = HttpStatus.BAD_REQUEST.value().toString(),
+            error = ex?.message,
+        )
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException?): ApiError? {
+        return ApiError(
+            status = HttpStatus.BAD_REQUEST,
+            statusValue = HttpStatus.BAD_REQUEST.value().toString(),
             error = ex?.message,
         )
     }
