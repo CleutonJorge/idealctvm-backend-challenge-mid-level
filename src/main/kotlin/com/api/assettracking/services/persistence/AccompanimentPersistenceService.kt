@@ -29,11 +29,10 @@ class AccompanimentPersistenceService(
         )
     }
 
-    fun getAccompaniment(documentNumber: Long, compareOrder: Comparator<AssetModel>): AccompanimentModel {
+    fun getAccompaniment(documentNumber: Long): AccompanimentModel {
         val user = userPersistenceService.getUser(documentNumber)
         val accompanimentOptional = accompanimentRepository.findByUser(user)
-        val accompaniment = verifyingAccompanimentIsPresent(accompanimentOptional)
-        return sortUserAssetList(accompaniment, compareOrder)
+        return verifyingAccompanimentIsPresent(accompanimentOptional)
     }
 
     fun updateAccompaniment(documentNumber: Long, assetSymbol: String): AccompanimentModel {
@@ -59,15 +58,6 @@ class AccompanimentPersistenceService(
             true -> throw UserAccompanimentNotExistException("user accompaniment not exist")
             false -> accompaniment.get()
         }
-    }
-
-    private fun sortUserAssetList(
-        accompaniment: AccompanimentModel,
-        compareOrder: Comparator<AssetModel>
-    ): AccompanimentModel {
-        val assets = accompaniment.assets.sortedWith(compareOrder)
-        accompaniment.assets = assets.toMutableList()
-        return accompaniment
     }
 
     private fun concatenatesUserNewAsset(

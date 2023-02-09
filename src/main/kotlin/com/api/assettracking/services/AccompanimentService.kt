@@ -25,8 +25,8 @@ class AccompanimentService(
 ) {
 
     fun getAccompaniment(documentNumber: Long, assetOrder: AssetAccompanimentOrderType): AccompanimentResponse {
-        val compareOrder = getCompareOrder(assetOrder)
-        return accompanimentPersistenceService.getAccompaniment(documentNumber, compareOrder).toResponse()
+        val getAccompanimentDAO = accompanimentPersistenceService.getAccompaniment(documentNumber)
+        return sortUserAssetList(getAccompanimentDAO, assetOrder).toResponse()
     }
 
     fun addAccompaniment(documentNumber: Long): AccompanimentResponse {
@@ -37,12 +37,16 @@ class AccompanimentService(
         return accompanimentPersistenceService.updateAccompaniment(documentNumber, assetSymbol).toResponse()
     }
 
-    private fun getCompareOrder(assetOrder: AssetAccompanimentOrderType): Comparator<AssetModel> {
-        return when (assetOrder) {
-            AssetAccompanimentOrderType.ASSET_SYMBOL -> compareBy(AssetModel::symbol)
-            AssetAccompanimentOrderType.ASSET_NAME -> compareBy(AssetModel::displayName)
-            AssetAccompanimentOrderType.ASSET_PRICE -> compareBy(AssetModel::regularMarketPrice)
-        }
+    private fun sortUserAssetList(
+        accompaniment: AccompanimentModel,
+        assetOrder: AssetAccompanimentOrderType
+    ): AccompanimentModel {
+        accompaniment.assets = when (assetOrder) {
+            AssetAccompanimentOrderType.ASSET_SYMBOL -> accompaniment.assets.sortedBy{ it.symbol }
+            AssetAccompanimentOrderType.ASSET_NAME -> accompaniment.assets.sortedBy{ it.displayName }
+            AssetAccompanimentOrderType.ASSET_PRICE -> accompaniment.assets.sortedBy{ it.regularMarketPrice }
+        }.toMutableList()
+        return accompaniment
     }
 
     private fun AccompanimentModel.toResponse() : AccompanimentResponse {

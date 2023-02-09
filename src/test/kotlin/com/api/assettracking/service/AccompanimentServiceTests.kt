@@ -2,6 +2,7 @@ package com.api.assettracking.service
 
 import com.api.assettracking.dtos.response.AccompanimentResponse
 import com.api.assettracking.dtos.response.AssetResponse
+import com.api.assettracking.enums.AssetAccompanimentOrderType
 import com.api.assettracking.enums.RoleName
 import com.api.assettracking.models.AccompanimentModel
 import com.api.assettracking.models.AssetModel
@@ -44,12 +45,6 @@ class AccompanimentServiceTests {
 
     private val passwordEncrypted: String = BCryptPasswordEncoder().encode("123")
 
-    private val assetResponse = AssetResponse(
-        displayName = "Ativo APPL",
-        symbol = "AAPL",
-        regularMarketPrice = BigDecimal(154.5)
-    )
-
     private val assetDAO = AssetModel(
         displayName = "Ativo APPL",
         symbol = "AAPL",
@@ -66,13 +61,6 @@ class AccompanimentServiceTests {
         roles = listOf(roleDAO)
     )
 
-    private val accompanimentResponse = AccompanimentResponse(
-        name = "Lista de ativos 01",
-        createAt = createAt,
-        updateAt = null,
-        assetList = listOf(assetResponse)
-    )
-
     val accompanimentDAO = AccompanimentModel(
         name = "Lista de ativos 01",
         createAt = createAt,
@@ -82,26 +70,42 @@ class AccompanimentServiceTests {
         assets = mutableListOf(assetDAO)
     )
 
-    fun AccompanimentModel.toResponse() : AccompanimentResponse {
-        return AccompanimentResponse(
-            name = name,
-            createAt = createAt,
-            updateAt = updateAt,
-            assetList = assets.map { AssetResponse(
-                displayName = it.displayName,
-                regularMarketPrice = it.regularMarketPrice,
-                symbol = it.symbol
-            ) }
-        )
-    }
-
     @Test
     fun `must save accompaniment`() {
         //Scenario
-        Mockito.doReturn(accompanimentDAO).`when`(accompanimentPersistenceService).saveAccompaniment(22400527083)
+        Mockito.doReturn(accompanimentDAO)
+            .`when`(accompanimentPersistenceService).saveAccompaniment(22400527083)
 
         // execution
         val result = service?.addAccompaniment(22400527083)
+
+        //validation
+        Assertions.assertNotNull(result)
+
+    }
+
+    @Test
+    fun `must update accompaniment`() {
+        //Scenario
+        Mockito.doReturn(accompanimentDAO)
+            .`when`(accompanimentPersistenceService).updateAccompaniment(22400527083, "AAPL")
+
+        // execution
+        val result = service?.updateAccompaniment(22400527083, "AAPL")
+
+        //validation
+        Assertions.assertNotNull(result)
+
+    }
+
+    @Test
+    fun `must get accompaniment`() {
+        //Scenario
+        Mockito.doReturn(accompanimentDAO)
+            .`when`(accompanimentPersistenceService).getAccompaniment(22400527083)
+
+        // execution
+        val result = service?.getAccompaniment(22400527083, AssetAccompanimentOrderType.ASSET_NAME)
 
         //validation
         Assertions.assertNotNull(result)

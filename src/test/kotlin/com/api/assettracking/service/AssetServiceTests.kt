@@ -2,15 +2,20 @@ package com.api.assettracking.service
 
 import com.api.assettracking.dtos.response.AccompanimentResponse
 import com.api.assettracking.dtos.response.AssetResponse
+import com.api.assettracking.dtos.response.QuoteResponse
 import com.api.assettracking.dtos.response.UserResponse
 import com.api.assettracking.enums.RoleName
 import com.api.assettracking.models.AccompanimentModel
+import com.api.assettracking.models.AssetModel
 import com.api.assettracking.models.UserModel
 import com.api.assettracking.models.security.RoleModel
 import com.api.assettracking.repositories.UserRepository
 import com.api.assettracking.services.AccompanimentService
+import com.api.assettracking.services.AssetQuotationService
+import com.api.assettracking.services.AssetService
 import com.api.assettracking.services.UserService
 import com.api.assettracking.services.persistence.AccompanimentPersistenceService
+import com.api.assettracking.services.persistence.AssetPersistenceService
 import com.api.assettracking.services.persistence.UserPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
@@ -26,13 +31,16 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-class UserServiceTests {
+class AssetServiceTests {
 
     @InjectMocks
-    var service: UserService? = null
+    var service: AssetService? = null
 
     @Mock
-    lateinit var userPersistenceService: UserPersistenceService
+    lateinit var assetQuotationService: AssetQuotationService
+
+    @Mock
+    lateinit var assetPersistenceService: AssetPersistenceService
 
     @Mock
     lateinit var accompanimentService: AccompanimentService
@@ -40,24 +48,13 @@ class UserServiceTests {
     @BeforeEach
     fun initMocks() {
         MockitoAnnotations.openMocks(this)
-        service = UserService(userPersistenceService, accompanimentService)
+        service = AssetService(assetQuotationService, assetPersistenceService, accompanimentService)
     }
 
-    private val roleDAO = RoleModel(
-        roleName = RoleName.ROLE_USER
-    )
-
-    private val passwordEncrypted = BCryptPasswordEncoder().encode("")
-
-    val id = UUID.randomUUID()
-
-    val userDAO = UserModel(
-        documentNumber = 22400527083,
-        fullName = "João Costa",
-        id = id,
-        password = passwordEncrypted,
-        type = "CPF",
-        roles = listOf(roleDAO)
+    private val quoteResponse = QuoteResponse(
+        name = "Ativo APPL",
+        price = BigDecimal(154.5),
+        symbol = "AAPL",
     )
 
     val createAt = LocalDateTime.now()
@@ -68,47 +65,38 @@ class UserServiceTests {
         regularMarketPrice = BigDecimal(154.5)
     )
 
-    //TODO error occurs when trying to modify BCryptPasswordEncoder
-    /*@Test
-    fun `must save user`() {
-        //Scenario
+    private val accompanimentResponse = AccompanimentResponse(
+        name = "Lista de ativos 01",
+        createAt = createAt,
+        updateAt = null,
+        assetList = listOf(assetResponse)
+    )
 
-        Mockito.doReturn(userDAO)
-            .`when`(userPersistenceService)
-            .saveUser(22400527083, "João Costa", "CPF", passwordEncrypted, listOf(RoleName.ROLE_USER))
+    private val assetUpdatedDAO = AssetModel(
+        displayName = "Ativo APPL",
+        symbol = "AAPL",
+        regularMarketPrice = BigDecimal(200.5),
+        id = UUID.randomUUID()
+    )
 
-        Mockito.`when`(accompanimentService.addAccompaniment(22400527083))
+    @Test
+    fun `must add asset in user list`() {
+
+        Mockito.`when`(assetQuotationService.getAssetQuotation("AAPL"))
+            .thenReturn(quoteResponse)
+
+        Mockito.`when`(assetPersistenceService.saveAsset(
+            "AAPL",
+            "Ativo APPL",
+            BigDecimal(154.5)
+        ))
+            .thenReturn(assetUpdatedDAO)
+
+        Mockito.`when`(accompanimentService.updateAccompaniment(22400527083, "AAPL"))
             .thenReturn(accompanimentResponse)
 
         // execution
-        val result = service?.addUser(22400527083, "João Costa", "", listOf(RoleName.ROLE_USER))
-
-        //validation
-        Assertions.assertNotNull(result)
-
-    }*/
-
-    @Test
-    fun `must return user`() {
-
-        Mockito.`when`(userPersistenceService.getUser(22400527083))
-            .thenReturn(userDAO)
-
-        // execution
-        val result = service?.getUser(22400527083)
-
-        //validation
-        Assertions.assertNotNull(result)
-    }
-
-    @Test
-    fun `must return users`() {
-
-        Mockito.`when`(userPersistenceService.getUsers())
-            .thenReturn(listOf(userDAO))
-
-        // execution
-        val result = service?.getUsers()
+        val result = service?.addAssetAccompaniment(22400527083,"AAPL")
 
         //validation
         Assertions.assertNotNull(result)
