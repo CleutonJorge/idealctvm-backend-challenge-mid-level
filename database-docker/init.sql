@@ -1,1 +1,0 @@
-CREATE DATABASE asset_tracking_database;

@@ -15,20 +15,17 @@ PostgresSQL JPA com hibernate
 ![Entidade Relacionamento](img/asset_tracking_database_v2.png)
 
 ## Execução
-### Execução banco de dados postgres:
-#### no diretório da imagem yml (\asset-tracking\database-docker) executar o comando:
-* `docker compose up` no terminal
-
-### Execução api spring boot:
-#### no diretório do projeto (\asset-tracking) executar os comandos:
+### Execução api e banco de dados postgres:
+#### no diretório principal executar os comandos no terminal:
 * `.\gradlew clean build` - limpar build do projeto
-* `docker build -t asset-tracking-app .` - build da imagem
-* `docker run -p 8080:8080 asset-tracking-app` - rodar contêiner na porta 8080
+* `docker rmi postgres` - apagar imagem antiga do banco
+* `docker rmi asset-tracking-app` - apagar imagem antiga da api
+* `docker compose up -d` - montar imagens
 
 ## Autenticação Spring Security
 #### API implementada com autenticação basic em todas as enpoints necessitando autenticação exceto:
 * Cadastro de usuários: POST /v1/user
-* swagger: http://localhost:8080/swagger-ui/index.html#/
+* swagger: http://localhost:8080/swagger-ui/index.html#/ login: cpf e senha cadastrada
 
 ## APIs REST
 ### Criação de Usuário - api cria usuário e adicionar uma lista de acompanhamento vazia.

@@ -7,9 +7,6 @@ spring:
       pool-name: plataforma-database-pool
       auto-commit: false
       connection-timeout: 30000
-    url: "jdbc:postgresql://host.docker.internal:5432/asset_tracking_database"
-    username: postgres
-    password: 123
     type: com.zaxxer.hikari.HikariDataSource
   jpa:
     properties:
