@@ -1,9 +1,8 @@
-package com.api.assettracking.controllers
+package com.api.assettracking.controllers.rest
 
 import com.api.assettracking.dtos.AssetDTO
 import com.api.assettracking.dtos.AssetListQuotationDTO
 import com.api.assettracking.dtos.response.AssetResponse
-import com.api.assettracking.models.AssetModel
 import com.api.assettracking.dtos.response.QuoteResponse
 import com.api.assettracking.services.AssetQuotationService
 import com.api.assettracking.services.AssetService

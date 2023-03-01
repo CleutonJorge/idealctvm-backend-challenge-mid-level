@@ -1,4 +1,4 @@
-package com.api.assettracking.controllers
+package com.api.assettracking.controllers.rest
 
 import com.api.assettracking.dtos.UserDTO
 import com.api.assettracking.dtos.response.UserResponse

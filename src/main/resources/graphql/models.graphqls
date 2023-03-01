@@ -1,0 +1,70 @@
+type Query {
+  getUser(documentNumber: String) : User
+  getUsers: [User]
+  getAssetListQuotation(assetList: AssetListQuotationInput) : [QuoteResponse]
+  getAssetAccompaniment(documentNumber: String, assetOrder: AssetAccompanimentOrderType) : AccompanimentResponse
+}
+
+type Mutation{
+  createUser(user: UserInput) : User
+  addAssetAccompaniment(asset: AssetInput) : Asset
+}
+
+#User
+type User {
+  id: String,
+  fullName: String,
+  documentNumber: String,
+  password: String,
+}
+
+input UserInput {
+  fullName: String,
+  documentNumber: String,
+  password: String,
+  roles : [RoleName]
+}
+
+enum RoleName {
+  ROLE_ADMIN,
+  ROLE_USER
+}
+
+#Asset
+type Asset {
+  id: String,
+  displayName: String,
+  symbol: String,
+  regularMarketPrice: Float,
+}
+
+input AssetInput {
+  documentNumber: String,
+  symbol: String,
+}
+
+#Quote
+type QuoteResponse {
+  name: String,
+  symbol: String,
+  price: Float,
+}
+
+input AssetListQuotationInput {
+  assetList: [String],
+}
+
+#Accompaniment
+type AccompanimentResponse {
+  name: String,
+  createAt: String,
+  updateAt: String,
+  assetList: [Asset],
+
+}
+
+enum AssetAccompanimentOrderType {
+  ASSET_NAME,
+  ASSET_SYMBOL,
+  ASSET_PRICE
+}

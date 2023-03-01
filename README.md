@@ -60,3 +60,27 @@ PostgresSQL JPA com hibernate
 "GOGL"
 ]
 }'`
+
+## APIs GraphQl
+### Criação de Usuário - api cria usuário e adicionar uma lista de acompanhamento vazia.
+`curl --location 'localhost:8080/graphql' \
+--header 'Content-Type: application/json' \
+--data '{"query":"mutation{\r\n  createUser(user : {\r\n    fullName: \"João\",\r\n  \tdocumentNumber: \"12345678910\",\r\n  \tpassword: \"123\",\r\n  \troles : ROLE_ADMIN\r\n  }\r\n  ){\r\n    id\r\n  \tfullName\r\n  \tdocumentNumber\r\n  }\r\n}","variables":{}}'`
+
+### Adição de Ativo - usuário adiciona um ativo em sua lista de acompanhamento.
+`curl --location 'localhost:8080/graphql' \
+--header 'Content-Type: application/json' \
+--data '{"query":"mutation{\r\n  addAssetAccompaniment(asset : {\r\n  \tdocumentNumber: \"12345678910\",\r\n  \tsymbol: \"APPL\",\r\n  }\r\n  ){\r\n    id\r\n  \tsymbol\r\n  \tdisplayName\r\n    regularMarketPrice\r\n  }\r\n}","variables":{}}'`
+
+### Consulta lista de ativos adicionados - usuário consulta sua lista de acompanhamento ordenada pelas informações do ativo (nome, código, preço)
+`curl --location 'localhost:8080/graphql' \
+--header 'Content-Type: application/json' \
+--data '{"query":"query{\r\n    getAssetAccompaniment(\r\n        documentNumber : \"12345678910\"\r\n        assetOrder : ASSET_NAME\r\n    ){\r\n        name\r\n        createAt\r\n        updateAt\r\n        assetList {\r\n            displayName\r\n            symbol\r\n            regularMarketPrice\r\n        }\r\n    }\r\n}","variables":{}}'`
+* ASSET_NAME - nome do ativo
+* ASSET_SYMBOL - código do ativo
+* ASSET_PRICE - preço do ativo
+
+### Consulta cotação de ativo - usuário consulta a cotação de um ou mais ativos.
+`curl --location 'localhost:8080/graphql' \
+--header 'Content-Type: application/json' \
+--data '{"query":"query{\r\n    getAssetListQuotation(assetList: {\r\n        assetList : [\r\n            \"PBR\", \"APPL\", \"GOGL\"\r\n        ]\r\n    }){\r\n        name\r\n        price\r\n        symbol\r\n    }\r\n}","variables":{}}'`

@@ -23,11 +23,24 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	//Postgres
 	runtimeOnly("org.postgresql:postgresql")
+	//Test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	//swagger
 	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0")
+	//security
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	//graphql
+	implementation("org.springframework.boot:spring-boot-starter-graphql")
+	implementation ("com.graphql-java:graphql-spring-boot-starter:5.0.2")
+	implementation ("com.graphql-java:graphiql-spring-boot-starter:5.0.2")
+	implementation ("com.graphql-java:voyager-spring-boot-starter:5.0.2")
+	implementation ("com.graphql-java:graphql-java-tools:5.2.4")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	runtimeOnly("com.h2database:h2")
 }
 
 tasks.withType<KotlinCompile> {
