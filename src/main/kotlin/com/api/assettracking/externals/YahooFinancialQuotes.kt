@@ -51,7 +51,7 @@ class YahooFinancialQuotes (
 
     private fun getHeaders(): MultiValueMap<String, String> {
         val headers: MultiValueMap<String, String> = LinkedMultiValueMap()
-        headers.add("X-API-KEY", "AfMRqDhPiT8H5fKs0oTKe7kB4HLHJQi36429ZoZM")
+        headers.add("X-API-KEY", "BCcVexig011kebh8jcMtO49ajBXaihGr6iefikLY")
         return headers
     }
 }
